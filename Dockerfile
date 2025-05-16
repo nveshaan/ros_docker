@@ -9,7 +9,8 @@ RUN apt-get update \
 
 # adding a non-root user
 ARG USERNAME=ros
-ARG USER_UID=1000
+# USER_UID must be specified at build time with --build-arg USER_UID=$(id -u)
+ARG USER_UID
 ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -42,7 +43,10 @@ RUN sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/
 COPY entrypoint.sh /entrypoint.sh
 COPY bashrc /home/${USERNAME}/.bashrc
 
-RUN chmod +x /entrypoint.sh
+# Fix permissions on user files
+RUN chown ${USERNAME}:${USERNAME} /home/${USERNAME}/.bashrc && \
+    chmod 644 /home/${USERNAME}/.bashrc && \
+    chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 CMD ["bash"]
