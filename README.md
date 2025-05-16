@@ -37,7 +37,7 @@ Add `--force` tag if needed. Using the above command, you can check that it is n
 ```bash
 udbipd attach --wsl --busid <busid>
 ```
-Again, you can verify using the first command. You should see it as `attached`.
+Again, you can verify using the first command. You should see it as `attached`. Be aware that you won't be able to use your device on Windows while it is in the `attached` state.
 
 4. In the container, you can check the devices which are connected using this command:
 ```bash
@@ -48,7 +48,7 @@ lsusb
 ```bash
 usbipd detach --busid <busid>
 ```
-Or, use `--all` tag to detach all devices.
+Or, use the `--all` tag to detach all devices.
 
 ---
 
