@@ -1,11 +1,11 @@
-> This container is made get ROS 2 running on Windows with Linux capabilities. Please run this using WSL.
+> This container is made to get ROS 2 running on Windows with Linux capabilities. Please run this using WSL.
 
 ---
 
 # Prerequisites
 Install the following tools:
-1. (usbipd)[https://learn.microsoft.com/en-us/windows/wsl/connect-usb]
-2. (XLaunch)[https://sourceforge.net/projects/vcxsrv/]
+1. [usbipd](https://learn.microsoft.com/en-us/windows/wsl/connect-usb)
+2. [XLaunch](https://sourceforge.net/projects/vcxsrv/)
 3. Docker & WSL2 Ubuntu 22.04
 
 # Build
@@ -27,17 +27,17 @@ Start the XLaunch app as mentioned (here)[https://jackkawell.wordpress.com/2019/
 usbipd list
 ```
 
-2. If the device you want your container to access, is not in `shared` mode, run this command.
+2. Run this command if the device you want your container to access is not in `shared` mode.
 ```bash
 usbipd bind --busid <bus ID of your device>
 ```
-Add `--force` tag if needed. You can check that it is now in `shared` mode using the above command.
+Add `--force` tag if needed. Using the above command, you can check that it is now in `shared` mode.
 
-3. Now, Docker in Windows uses WSL as its backend. Attaching the devices to WSL, makes Docker to access them as well.
+3. Now, Docker in Windows uses WSL as its backend. Attaching the devices to WSL allows Docker to access them as well.
 ```bash
 udbipd attach --wsl --busid <busid>
 ```
-Again, you can verify using the first command, you should see as `attached`.
+Again, you can verify using the first command. You should see it as `attached`.
 
 4. In the container, you can check the devices which are connected using this command:
 ```bash
@@ -48,7 +48,7 @@ lsusb
 ```bash
 usbipd detach --busid <busid>
 ```
-Or, just use `--all` tag to detach all devices.
+Or, use `--all` tag to detach all devices.
 
 ---
 
