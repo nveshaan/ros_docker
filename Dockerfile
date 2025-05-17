@@ -10,7 +10,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # adding a non-root user
-ARG USERNAME=ros
+ARG USERNAME
 # USER_UID must be specified at build time with --build-arg USER_UID=$(id -u)
 ARG USER_UID
 ARG USER_GID=$USER_UID
