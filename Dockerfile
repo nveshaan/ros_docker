@@ -34,7 +34,8 @@ RUN sudo apt-get update \
 # spinnaker sdk installation
 ADD spinnaker-4.2.0.46-amd64 /root/spinnaker-debs
 # RUN chmod +x ./install_spinnaker.sh
-RUN yes | /root/spinnaker-debs/install_spinnaker.sh
+# RUN yes | /root/spinnaker-debs/install_spinnaker.sh
+RUN echo "y" | /root/spinnaker-debs/install_spinnaker.sh $USERNAME
 
 # ready to run
 COPY entrypoint.sh /entrypoint.sh

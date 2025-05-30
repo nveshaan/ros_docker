@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+passed_user="$1"
 
 MY_PROMPT='$ '
 MY_YESNO_PROMPT='[Y/n] $ '
@@ -24,43 +25,60 @@ else
 fi
 
 echo "Adding new members to usergroup $grpname..." 
-while :
-do
-    # Show current members of the user group
-    users=$(grep -E '^'$grpname':' /etc/group |sed -e 's/^.*://' |sed -e 's/, */, /g')
-    if [ -z "$users" ]
-    then 
-        echo "Usergroup $grpname is empty"
-    else
-        echo "Current members of $grpname group: $users"
-    fi
-
-    echo "To add a new member please enter username (or hit Enter to continue):"
-    echo -n "$MY_PROMPT"
-    read usrname
-    if [ "$usrname" = "" ]
+if [ -n "$1" ]; then
+    usrname="$1"
+    if (getent passwd $usrname > /dev/null)
     then
-        break
+        groupadd -f $grpname
+        usermod -a -G $grpname $usrname
+        echo "Added user $usrname to group $grpname"
     else
-        # Check if user name exists
-        if (getent passwd $usrname > /dev/null)
-        then
-            # Get confirmation that the username is ok 
-            echo "Adding user $usrname to group $grpname group. Is this OK?"
-            echo -n "$MY_YESNO_PROMPT"
-            read confirm
-            if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ] || [ "$confirm" = "yes" ] || [ "$confirm" = "Yes" ] || [ "$confirm" = "" ]
-            then
-                # Create user group (if not exists) and add user to it
-                groupadd -f $grpname
-                usermod -a -G $grpname $usrname
-                echo "Added user $usrname"
-            fi
-        else
-            echo "User "\""$usrname"\"" does not exist"
-        fi
+        echo "User \"$usrname\" does not exist"
+        exit 1
     fi
-done
+else
+    while :
+    do
+        # Show current members of the user group
+        users=$(grep -E '^'$grpname':' /etc/group |sed -e 's/^.*://' |sed -e 's/, */, /g')
+        if [ -z "$users" ]
+        then 
+            echo "Usergroup $grpname is empty"
+        else
+            echo "Current members of $grpname group: $users"
+        fi
+
+        echo "To add a new member please enter username (or hit Enter to continue):"
+        if [ -n "$passed_user" ]; then
+    	    usrname="$passed_user"
+    	    echo "$MY_PROMPT$usrname"
+	else
+            echo -n "$MY_PROMPT"
+            read usrname
+	fi
+
+        if [ "$usrname" = "" ]
+        then
+            break
+        else
+            if (getent passwd $usrname > /dev/null)
+            then
+                echo "Adding user $usrname to group $grpname group. Is this OK?"
+                echo -n "$MY_YESNO_PROMPT"
+                read confirm
+                if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ] || [ "$confirm" = "yes" ] || [ "$confirm" = "Yes" ] || [ "$confirm" = "" ]
+                then
+                    groupadd -f $grpname
+                    usermod -a -G $grpname $usrname
+                    echo "Added user $usrname"
+                fi
+            else
+                echo "User "\""$usrname"\"" does not exist"
+            fi
+        fi
+    done
+fi
+
 
 # Create udev rule
 UdevFile="/etc/udev/rules.d/40-flir-spinnaker.rules"
@@ -71,7 +89,7 @@ echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"1724\", GROUP=\"$grpname\"" 1>>$Ude
 
 echo "Do you want to restart the udev daemon?"
 echo -n "$MY_YESNO_PROMPT"
-read confirm
+confirm="y"
 if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ] || [ "$confirm" = "yes" ] || [ "$confirm" = "Yes" ] || [ "$confirm" = "" ]
 then
     /etc/init.d/udev restart
