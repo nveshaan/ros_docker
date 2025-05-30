@@ -32,6 +32,7 @@ fi
 
 echo "Installing Spinnaker packages..."
 
+cd /root/spinnaker-debs
 
 sudo dpkg -i libgentl_*.deb
 sudo dpkg -i libspinnaker_*.deb
