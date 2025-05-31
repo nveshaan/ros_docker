@@ -4,6 +4,7 @@ FROM osrf/ros:humble-desktop-full
 RUN apt-get update \
     && apt-get install -y \
     nano \
+    vim \
     usbutils \
     net-tools \
     udev \
@@ -36,6 +37,9 @@ ADD spinnaker-4.2.0.46-amd64 /root/spinnaker-debs
 # RUN chmod +x ./install_spinnaker.sh
 # RUN yes | /root/spinnaker-debs/install_spinnaker.sh
 RUN echo "y" | /root/spinnaker-debs/install_spinnaker.sh $USERNAME
+
+# spinnaker ros2 camera driver installation
+RUN sudo apt-get install ros-humble-spinnaker-camera-driver -y
 
 # ready to run
 COPY entrypoint.sh /entrypoint.sh

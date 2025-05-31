@@ -22,4 +22,6 @@ else
     echo "DISPLAY is already set to $DISPLAY"
 fi
 
+source /opt/ros/humble/setup.bash
+
 exec $@
