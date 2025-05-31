@@ -1,4 +1,5 @@
-FROM osrf/ros:humble-desktop-full
+ARG IMG=ros
+FROM $IMG
 
 # install necessary tools
 RUN apt-get update \
