@@ -4,7 +4,8 @@
 ---
 # Build
 ```bash
-docker build --build-arg USER_UID=$(id -u) --build-arg USERNAME=$(id -un) -t ros:cam .
+chmod +x build_docker.sh
+./build_docker.sh
 ```
 
 # Run
