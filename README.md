@@ -9,7 +9,8 @@ docker build --build-arg USER_UID=$(id -u) --build-arg USERNAME=$(id -un) -t ros
 
 # Run
 ```bash
-docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --user=$(id -un) --network=host --ipc=host --pid=host --privileged ros:cam
+chmod +x run_docker.sh
+./run_docker.sh
 ```
 Either use `--rm` or `--name=ros` tags.
 
