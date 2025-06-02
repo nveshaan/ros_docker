@@ -2,6 +2,7 @@
 
 set -o errexit
 
+
 echo "This is a script to assist with installation of the Spinnaker SDK."
 echo "Auto-confirmed: Installing all the Spinnaker SDK packages..."
 
@@ -15,6 +16,8 @@ fi
 
 echo "Installing Spinnaker packages..."
 
+cd /root/spinnaker-debs
+
 sudo dpkg -i libgentl_*.deb
 sudo dpkg -i libspinnaker_*.deb
 sudo dpkg -i libspinnaker-dev_*.deb
@@ -24,6 +27,7 @@ sudo dpkg -i libspinvideo_*.deb
 sudo dpkg -i libspinvideo-dev_*.deb
 sudo dpkg -i libspinvideo-c_*.deb
 sudo dpkg -i libspinvideo-c-dev_*.deb
+sudo apt-get install -y ./spinview-qt_*.deb
 sudo dpkg -i spinview-qt_*.deb
 sudo dpkg -i spinview-qt-dev_*.deb
 sudo dpkg -i spinupdate_*.deb
@@ -31,15 +35,12 @@ sudo dpkg -i spinupdate-dev_*.deb
 sudo dpkg -i spinnaker_*.deb
 sudo dpkg -i spinnaker-doc_*.deb
 
-echo
 echo "Auto-confirmed: Adding udev entry..."
 sudo sh configure_spinnaker.sh
 
-echo
 echo "Auto-confirmed: Setting USB-FS memory size..."
 sudo sh configure_usbfs.sh
 
-echo
 echo "Auto-confirmed: Adding Spinnaker prebuilt examples to system path..."
 sudo sh configure_spinnaker_paths.sh
 

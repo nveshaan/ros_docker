@@ -25,8 +25,8 @@ else
 fi
 
 echo "Adding new members to usergroup $grpname..." 
-if [ -n "$passed_user" ]; then
-    usrname="$passed_user"
+if [ -n "$1" ]; then
+    usrname="$1"
     if (getent passwd $usrname > /dev/null)
     then
         groupadd -f $grpname
@@ -39,7 +39,8 @@ if [ -n "$passed_user" ]; then
 else
     while :
     do
-        users=$(grep -E '^'$grpname':' /etc/group | sed -e 's/^.*://' | sed -e 's/, */, /g')
+    	# Show current members of the user group
+        users=$(grep -E '^'$grpname':' /etc/group |sed -e 's/^.*://' |sed -e 's/, */, /g')
         if [ -z "$users" ]
         then 
             echo "Usergroup $grpname is empty"
@@ -48,8 +49,13 @@ else
         fi
 
         echo "To add a new member please enter username (or hit Enter to continue):"
-        echo -n "$MY_PROMPT"
-        read usrname
+        if [ -n "$passed_user" ]; then
+    	    usrname="$passed_user"
+    	    echo "$MY_PROMPT$usrname"
+	else
+            echo -n "$MY_PROMPT"
+            read usrname
+	fi
 
         if [ "$usrname" = "" ]
         then
@@ -67,7 +73,7 @@ else
                     echo "Added user $usrname"
                 fi
             else
-                echo "User \"$usrname\" does not exist"
+                echo "User "\""$usrname"\"" does not exist"
             fi
         fi
     done
