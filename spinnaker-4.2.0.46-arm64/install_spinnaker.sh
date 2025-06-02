@@ -36,7 +36,7 @@ sudo dpkg -i spinnaker_*.deb
 sudo dpkg -i spinnaker-doc_*.deb
 
 echo "Auto-confirmed: Adding udev entry..."
-sudo sh configure_spinnaker.sh
+sudo sh configure_spinnaker.sh "$1"
 
 echo "Auto-confirmed: Setting USB-FS memory size..."
 sudo sh configure_usbfs.sh

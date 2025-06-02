@@ -9,6 +9,9 @@ docker run --rm -it \
   --network=host \
   --ipc=host \
   --pid=host \
+  --env DISPLAY=$DISPLAY \
+  --env XAUTHORITY=$XAUTHORITY \
+  -v $XAUTHORITY:$XAUTHORITY \
   --privileged \
   $IMAGE_NAME \
   ros2 launch spinnaker_camera_driver driver_node.launch.py camera_type:=blackfly_s serial:="'20531756'"

@@ -55,7 +55,7 @@ ADD $SPIN_PATH /root/spinnaker-debs
 RUN echo "y" | /root/spinnaker-debs/install_spinnaker.sh $USERNAME
 
 # spinnaker ros2 camera driver installation
-RUN sudo apt-get install ros-humble-spinnaker-camera-driver -y
+RUN sudo apt-get update && sudo apt-get install ros-humble-spinnaker-camera-driver -y
 
 # ready to run
 COPY entrypoint.sh /entrypoint.sh

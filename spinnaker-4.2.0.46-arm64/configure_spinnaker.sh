@@ -87,15 +87,15 @@ echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"1e10\", GROUP=\"$grpname\"" >> $Ude
 echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"1724\", GROUP=\"$grpname\"" >> $UdevFile
 
 echo "Do you want to restart the udev daemon?"
-echo -n "$MY_YESNO_PROMPT"
-read confirm
-if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ] || [ "$confirm" = "yes" ] || [ "$confirm" = "Yes" ] || [ "$confirm" = "" ]
-then
+#echo -n "$MY_YESNO_PROMPT"
+#read confirm
+#if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ] || [ "$confirm" = "yes" ] || [ "$confirm" = "Yes" ] || [ "$confirm" = "" ]
+#then
     /etc/init.d/udev restart
-else
-    echo "Udev was not restarted.  Please reboot the computer for the rules to take effect."
-    exit 0
-fi
+#else
+#    echo "Udev was not restarted.  Please reboot the computer for the rules to take effect."
+#    exit 0
+#fi
 
 echo "Configuration complete."
 echo "A reboot may be required on some systems for changes to take effect."

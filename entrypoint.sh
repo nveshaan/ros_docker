@@ -12,7 +12,7 @@ if [[ -z "$DISPLAY" ]]; then
 
         # Append to bashrc if not already present
         if ! grep -q "export DISPLAY=" ~/.bashrc; then
-            echo "export DISPLAY=${ip_address}:0.0" >> ~/.bashrc
+            echo "export DISPLAY=${ip_address}:0" >> ~/.bashrc
             echo "DISPLAY environment variable added to ~/.bashrc"
         fi
     else
