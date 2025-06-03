@@ -13,5 +13,5 @@ chmod +x build_docker.sh
 chmod +x run_docker.sh
 ./run_docker.sh
 ```
-Either use `--rm` or `--name=ros` tags.
+When nothing works, just `sudo reboot`
 
