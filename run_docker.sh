@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME="ros:cam"
+IMAGE_NAME="ros:lid"
 
 docker run --rm -it \
   -e DISPLAY=$DISPLAY \
@@ -18,4 +18,4 @@ docker run --rm -it \
   -v /run/udev:/run/udev \
   --group-add $(getent group flirimaging | cut -d: -f3) \
   $IMAGE_NAME \
-  ros2 launch spinnaker_camera_driver driver_node.launch.py camera_type:=blackfly_s serial:="'20531756'"
+  #ros2 launch spinnaker_camera_driver driver_node.launch.py camera_type:=blackfly_s serial:="'20531756'"

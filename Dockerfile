@@ -23,7 +23,8 @@ RUN apt-get update \
     usbutils \
     net-tools \
     udev \
-    build-essential
+    build-essential \
+    python3-pip
   
 
 # adding a non-root user
@@ -47,15 +48,38 @@ RUN sudo apt-get update \
     && sudo apt-get install python3-colcon-common-extensions python3-rosdep -y \
     && rosdep update
 
-# spinnaker sdk installation
-ARG SPIN_PATH="spinnaker-4.2.0.46-amd64"
-ADD $SPIN_PATH /root/spinnaker-debs
-# RUN chmod +x ./install_spinnaker.sh
-# RUN yes | /root/spinnaker-debs/install_spinnaker.sh
-RUN echo "y" | /root/spinnaker-debs/install_spinnaker.sh $USERNAME
+# ouster-ros package installation
+# install dependencies
+RUN apt-get update && apt-get install -y\
+    libeigen3-dev \
+    libjsoncpp-dev \
+    libspdlog-dev \
+    libcurl4-openssl-dev \
+    cmake
 
-# spinnaker ros2 camera driver installation
-RUN sudo apt-get update && sudo apt-get install ros-humble-spinnaker-camera-driver -y
+# git repo
+RUN mkdir -p ros2_ws/src
+WORKDIR /ros2_ws/src
+
+RUN git clone -b ros2 --recurse-submodules https://github.com/ouster-lidar/ouster-ros.git 
+
+WORKDIR /ros2_ws
+RUN bash -c "source /opt/ros/humble/setup.bash && \
+    apt-get update && \
+    apt-get install -y \
+        libeigen3-dev \
+        libjsoncpp-dev \
+        libspdlog-dev \
+        libcurl4-openssl-dev \
+        cmake && \
+    rosdep update && \
+    rosdep install --from-paths src -y --ignore-src && \
+    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release"
+
+WORKDIR /
+RUN python3 -m venv ouster \
+    && source /ouster/bin/activate \
+    && pip3 install ouster-sdk
 
 # ready to run
 COPY entrypoint.sh /entrypoint.sh
