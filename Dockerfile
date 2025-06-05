@@ -76,10 +76,14 @@ RUN bash -c "source /opt/ros/humble/setup.bash && \
     rosdep install --from-paths src -y --ignore-src && \
     colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release"
 
+# ouster-sdk python pkg
 WORKDIR /
-RUN python3 -m venv ouster \
+RUN bash -c " sudo apt-get -y install python3.10-venv && python3 -m venv ouster \
     && source /ouster/bin/activate \
-    && pip3 install ouster-sdk
+    && pip3 install ouster-sdk"
+
+# install rviz2
+RUN sudo apt update && sudo apt-get install -y ros-humble-rviz2
 
 # ready to run
 COPY entrypoint.sh /entrypoint.sh
