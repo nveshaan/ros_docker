@@ -21,3 +21,5 @@ Be sure to run the following command before installing any packages:
 ```bash
 sudo apt-get update
 ```
+
+> NOTE: switch to `cam-mod` and `lid-mod` branches for camera and lidar docker containers.
